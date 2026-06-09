@@ -20,9 +20,9 @@ on:
         required: true
         type: choice
         options:
-          - dnd5e-homebrew
-          - pfsf2e-homebrew
-          - ttrpg-assets
+          - dnd5e_homebrew
+          - pfsf2e_homebrew
+          - ttrpg_assets
   release:
     types: [published]
 
