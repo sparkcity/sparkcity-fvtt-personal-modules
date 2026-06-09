@@ -123,7 +123,7 @@ jobs:
       # Upload artifacts for workflow_dispatch runs
       - name: Upload Artifacts
         if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: module-${{ github.event.inputs.module_name }}
           path: |
