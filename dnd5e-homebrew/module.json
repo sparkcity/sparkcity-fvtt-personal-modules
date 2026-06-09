@@ -1,0 +1,267 @@
+{
+  "id": "shared-homebrew",
+  "title": "Shared Homebrew",
+  "version": "1.18.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.999"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Parker",
+      "flags": {}
+    }
+  ],
+  "packs": [
+    {
+      "name": "hippogriffs-classes",
+      "label": "Hippogriff's Classes",
+      "path": "packs/hippogriffs-classes",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "hippogriffs-spells",
+      "label": "Hippogriff's Spells & Spell Revisions",
+      "path": "packs/hippogriffs-spells",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "misc-spells",
+      "label": "Misc Spells",
+      "path": "packs/misc-spells",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "misc-items",
+      "label": "Misc Items",
+      "path": "packs/misc-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "misc-features",
+      "label": "Miscellaneous Features",
+      "path": "packs/misc-features",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "hippogriffs-features",
+      "label": "Hippogriff's Features",
+      "path": "packs/hippogriffs-features",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "hippogriffs-items",
+      "label": "Hippogriff's Items",
+      "path": "packs/hippogriffs-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "hippogriffs-notes",
+      "label": "Hippogriff's Compendium",
+      "path": "packs/hippogriffs-notes",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "misc-creatures",
+      "label": "Misc Creatures",
+      "path": "packs/misc-creatures",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "parker-creatures",
+      "label": "Parker's Creatures",
+      "path": "packs/parker-creatures",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "parker-items",
+      "label": "Parker's Items",
+      "path": "packs/parker-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "parker-features",
+      "label": "Parker's Features",
+      "path": "packs/parker-features",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "parker-spells",
+      "label": "Parker's Spells",
+      "path": "packs/parker-spells",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "parkers-notes",
+      "label": "Parker's Notes",
+      "path": "packs/parkers-notes",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+    {
+      "name": "hippogriffs-tables",
+      "label": "Hippogriff's Tables",
+      "path": "packs/hippogriffs-tables",
+      "type": "RollTable",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    },
+      {
+      "name": "parkers-tables",
+      "label": "Parker's Tables",
+      "path": "packs/parkers-tables",
+      "type": "RollTable",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "dnd5e",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Shared Homebrew",
+      "sorting": "a",
+      "color": "#13489e",
+      "packs": [],
+      "folders": [
+        {
+          "name": "Hippogriff's Campaign Index",
+          "sorting": "a",
+          "color": "#4d58a1",
+          "packs": [
+            "hippogriffs-classes",
+            "hippogriffs-notes",
+            "hippogriffs-spells",
+            "hippogriffs-features",
+            "hippogriffs-items",
+            "hippogriffs-tables"
+          ]
+        },
+        {
+          "name": "Miscellaneous",
+          "sorting": "a",
+          "color": "#734da1",
+          "packs": [
+            "misc-creatures",
+            "misc-features",
+            "misc-items",
+            "misc-spells"
+          ]
+        },
+        {
+          "name": "Parker's Homebrew",
+          "sorting": "a",
+          "color": "#785bae",
+          "packs": [
+            "parker-creatures",
+            "parker-features",
+            "parker-items",
+            "parker-spells",
+            "parkers-notes",
+            "parkers-tables"
+          ]
+        }
+      ]
+    }
+  ],
+  "manifest": "https://github.com/sparkcity/shared-homebrew/releases/latest/download/module.json",
+  "download": "https://github.com/sparkcity/shared-homebrew/releases/latest/download/module.zip"
+}

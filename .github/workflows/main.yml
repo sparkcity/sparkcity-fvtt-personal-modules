@@ -1,0 +1,145 @@
+# GitHub Actions workflow for building FoundryVTT modules from a repository containing multiple modules.
+#
+# This workflow allows building a specific module directory via workflow_dispatch input.
+# Modules are expected to be in separate subdirectories with their own module.json.
+
+name: Build Specific Module
+
+env:
+  project_url: "https://github.com/${{github.repository}}"
+  latest_manifest_url: "https://github.com/${{github.repository}}/releases/latest/download/module-${{github.event.inputs.module_name}}.json"
+  release_module_url: "https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module-${{github.event.inputs.module_name}}.zip"
+
+# Trigger on workflow dispatch with manual input
+# OR trigger on releases for automated builds
+on:
+  workflow_dispatch:
+    inputs:
+      module_name:
+        description: 'Module directory name to build'
+        required: true
+        type: choice
+        options:
+          - dnd5e-homebrew
+          - pfsf2e-homebrew
+          - ttrpg-assets
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Determine module directory based on input or release tag
+      # Module name extracted from release tag (e.g., "testmodule-v1.2.3" -> "testmodule")
+      - name: Set Module Directory
+        id: module_dir
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            MODULE_DIR="${{ github.event.inputs.module_name }}"
+          else
+            MODULE_DIR=$(echo "${{ github.event.release.tag_name }}" | cut -d'-' -f1)
+          fi
+          echo "module_dir=$MODULE_DIR" >> $GITHUB_OUTPUT
+          echo "Building module from: $MODULE_DIR"
+
+      - name: Verify Module Directory
+        run: |
+          if [ ! -d "${{ steps.module_dir.outputs.module_dir }}" ]; then
+            echo "Error: Module directory '${{ steps.module_dir.outputs.module_dir }}' not found"
+            exit 1
+          fi
+          if [ ! -f "${{ steps.module_dir.outputs.module_dir }}/module.json" ]; then
+            echo "Error: module.json not found in ${{ steps.module_dir.outputs.module_dir }}"
+            exit 1
+          fi
+
+      - name: Extract Version From Tag
+        id: get_version
+        uses: battila7/get-version-action@v2
+        if: github.event_name == 'release'
+
+      - name: Set Version For Workflow Dispatch
+        id: set_version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          VERSION="0.1.0"
+          echo "version-without-v=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Resolve Version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ steps.set_version.outputs.version-without-v }}"
+          else
+            VERSION="${{ steps.get_version.outputs.version-without-v }}"
+          fi
+          echo "resolved_version=$VERSION" >> $GITHUB_OUTPUT
+
+      # Modify module.json with release-specific values
+      - name: Modify Module Manifest With Release-Specific Values
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: "${{ steps.module_dir.outputs.module_dir }}/module.json"
+        env:
+          VERSION: ${{ steps.version.outputs.resolved_version }}
+          URL: ${{ env.project_url }}
+          MANIFEST: ${{ env.latest_manifest_url }}
+          DOWNLOAD: ${{ env.release_module_url }}
+
+      # Create a module archive for the specific module
+      # Build the zip file with a module-specific name and verify zip was created
+      - name: Create Module Archive
+        run: |
+          MODULE_DIR="${{ steps.module_dir.outputs.module_dir }}"
+          MODULE_NAME="${{ github.event.inputs.module_name }}"
+          
+          cd "$MODULE_DIR"
+          zip                                    \
+            --recurse-paths                      \
+            ../module-${MODULE_NAME}.zip         \
+            module.json                          \
+            README.md                            \
+            LICENSE                              \
+            templates/                           \
+            assets/                              \
+            scripts/                             \
+            styles/                              \
+            packs/                               \
+            language/                            \
+            lang/ 2>/dev/null || true
+          
+          if [ ! -f "../module-${MODULE_NAME}.zip" ]; then
+            echo "Error: Failed to create module archive"
+            exit 1
+          fi
+
+      # Upload artifacts for workflow_dispatch runs
+      - name: Upload Artifacts
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v3
+        with:
+          name: module-${{ github.event.inputs.module_name }}
+          path: |
+            module-${{ github.event.inputs.module_name }}.zip
+            ${{ steps.module_dir.outputs.module_dir }}/module.json
+
+      # Update GitHub release with files for release events
+      - name: Update Release With Files
+        if: github.event_name == 'release'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          draft: ${{ github.event.release.unpublished }}
+          prerelease: ${{ github.event.release.prerelease }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "./module-${{ steps.module_dir.outputs.module_dir }}.json, ./module-${{ steps.module_dir.outputs.module_dir }}.zip"
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
