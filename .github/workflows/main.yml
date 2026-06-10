@@ -77,11 +77,18 @@ jobs:
           MODULE_NAME=$(basename "$MODULE_DIR")
           VERSION="${{ steps.version.outputs.resolved_version }}"
           
+          # For release events, use the full tag name; for workflow_dispatch, construct it
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            RELEASE_TAG="${MODULE_NAME}-v${VERSION}"
+          else
+            RELEASE_TAG="${{ github.event.release.tag_name }}"
+          fi
+          
           # Update module.json with correct URLs
           jq --arg version "$VERSION" \
              --arg url "${{ env.project_url }}" \
-             --arg manifest "https://github.com/${{ github.repository }}/releases/download/${MODULE_NAME}-v${VERSION}/module.json" \
-             --arg download "https://github.com/${{ github.repository }}/releases/download/${MODULE_NAME}-v${VERSION}/module.zip" \
+             --arg manifest "https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/module.json" \
+             --arg download "https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/module.zip" \
              '.version = $version | .url = $url | .manifest = $manifest | .download = $download' \
              "$MODULE_DIR/module.json" > "$MODULE_DIR/module.json.tmp" && \
              mv "$MODULE_DIR/module.json.tmp" "$MODULE_DIR/module.json"
