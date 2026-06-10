@@ -1,0 +1,240 @@
+{
+  "id": "pfsf2e-homebrew",
+  "title": "Parker's PFSF2E Homebrew Module",
+  "version": "placeholder",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.999"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {}
+      },
+      {
+        "id": "sf2e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Parker",
+      "flags": {}
+    }
+  ],
+  "packs": [
+    {
+      "name": "sf2e-homebrew-physical-items",
+      "label": "[Items] Physical Items",
+      "path": "packs/sf2e-homebrew-physical-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-character-building",
+      "label": "[Items] Character Building",
+      "path": "packs/sf2e-homebrew-character-building",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-other",
+      "label": "[Items] Other",
+      "path": "packs/sf2e-homebrew-other",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-creatures",
+      "label": "[Actors] Creatures",
+      "path": "packs/sf2e-homebrew-actors",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-journals",
+      "label": "[JournalEntry] Journals",
+      "path": "packs/sf2e-homebrew-journals",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-tables",
+      "label": "[RollTable] Tables",
+      "path": "packs/sf2e-homebrew-tables",
+      "type": "RollTable",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+    {
+      "name": "sf2e-homebrew-macros",
+      "label": "[Macro] Macros",
+      "path": "packs/sf2e-homebrew-macros",
+      "type": "Macro",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "sf2e",
+      "flags": {}
+    },
+
+    {
+      "name": "pf2e-homebrew-physical-items",
+      "label": "[Items] Physical Items",
+      "path": "packs/pf2e-homebrew-physical-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-character-building",
+      "label": "[Items] Character Building",
+      "path": "packs/pf2e-homebrew-character-building",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-other",
+      "label": "[Items] Other",
+      "path": "packs/pf2e-homebrew-other",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-creatures",
+      "label": "[Actors] Creatures",
+      "path": "packs/pf2e-homebrew-actors",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-journals",
+      "label": "[JournalEntry] Journals",
+      "path": "packs/pf2e-homebrew-journals",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-tables",
+      "label": "[RollTable] Tables",
+      "path": "packs/pf2e-homebrew-tables",
+      "type": "RollTable",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    },
+    {
+      "name": "pf2e-homebrew-macros",
+      "label": "[Macro] Macros",
+      "path": "packs/pf2e-homebrew-macros",
+      "type": "Macro",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "pf2e",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Parker's PFSF2E Homebrew",
+      "sorting": "a",
+      "color": "#333333",
+      "packs": [],
+      "folders": [
+        {
+          "name": "Starfinder",
+          "sorting": "a",
+          "color": "#50588A",
+          "packs": [
+            "sf2e-homebrew-physical-items",
+            "sf2e-homebrew-character-building",
+            "sf2e-homebrew-other",
+            "sf2e-homebrew-creatures",
+            "sf2e-homebrew-journals",
+            "sf2e-homebrew-tables",
+            "sf2e-homebrew-macros"
+          ]
+        },
+        {
+          "name": "Pathfinder",
+          "sorting": "a",
+          "color": "#8A5650",
+          "packs": [
+            "pf2e-homebrew-physical-items",
+            "pf2e-homebrew-character-building",
+            "pf2e-homebrew-other",
+            "pf2e-homebrew-creatures",
+            "pf2e-homebrew-journals",
+            "pf2e-homebrew-tables",
+            "pf2e-homebrew-macros"
+          ]
+        }
+      ]
+    }
+  ],
+  "manifest": "placeholder",
+  "download": "placeholder"
+}
