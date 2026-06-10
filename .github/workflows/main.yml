@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # Determine module directory based on input or release tag
       # Module name extracted from release tag (e.g., "testmodule-v1.2.3" -> "testmodule")
