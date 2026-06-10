@@ -131,13 +131,16 @@ jobs:
             ./module.zip
             ./module.json
 
+      # Update the GitHub release with the manifest and module archive files.
       - name: Update Release With Files
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
+        id: create_version_release
+        uses: ncipollo/release-action@v1
         with:
-          files: |
-            ./module.json
-            ./module.zip
-          tag_name: ${{ github.event.release.tag_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          draft: ${{ github.event.release.unpublished }}
+          prerelease: ${{ github.event.release.prerelease }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "./module.json, ./module.zip"
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
