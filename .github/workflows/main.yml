@@ -61,13 +61,15 @@ jobs:
           VERSION="0.1.0"
           echo "version-without-v=$VERSION" >> $GITHUB_OUTPUT
 
+        # Extract only the version number from the full tag ("ttrpg-assets-v1.1.0" should become "1.1.0")
       - name: Resolve Version
         id: version
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             VERSION="${{ steps.set_version.outputs.version-without-v }}"
           else
-            VERSION="${{ steps.get_version.outputs.version-without-v }}"
+            FULL_TAG="${{ steps.get_version.outputs.version-without-v }}"
+            VERSION=$(echo "$FULL_TAG" | sed 's/^.*-v//')
           fi
           echo "resolved_version=$VERSION" >> $GITHUB_OUTPUT
 
