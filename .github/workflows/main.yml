@@ -1,26 +1,8 @@
-# GitHub Actions workflow for building FoundryVTT modules from a repository containing multiple modules.
-#
-# This workflow allows building a specific module directory via workflow_dispatch input.
-# Modules are expected to be in separate subdirectories with their own module.json.
-
 name: Build Specific Module from Repository of Multiple Modules
 
 env:
-  # The URL used for the module's "Project URL" link on FoundryVTT's website.
   project_url: "https://github.com/${{github.repository}}"
 
-  # A URL that will always point to the latest manifest.
-  # FoundryVTT uses this URL to check whether the current module version that
-  # is installed is the latest version. This URL should NOT change,
-  # otherwise FoundryVTT won't be able to perform this check.
-  latest_manifest_url: "https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json"
-
-  # The URL to the module archive associated with the module release being
-  # processed by this workflow.
-  release_module_url: "https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip"
-
-# Trigger on workflow dispatch with manual input
-# OR trigger on releases for automated builds
 on:
   workflow_dispatch:
     inputs:
@@ -36,24 +18,6 @@ on:
     types: [published]
 
 jobs:
-
-  discover-modules:
-    runs-on: ubuntu-latest
-    outputs:
-      modules: ${{ steps.find-modules.outputs.modules }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Discover Modules
-        id: find-modules
-        run: |
-          MODULES=$(find . -maxdepth 2 -name "module.json" -type f | \
-                    xargs dirname | \
-                    xargs basename -a | \
-                    jq -R -s -c 'split("\n")[:-1] | unique')
-          echo "modules=$MODULES" >> $GITHUB_OUTPUT
-          echo "Found modules: $MODULES"
-
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -61,11 +25,8 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
-      # Determine module directory based on input or release tag
-      # Module name extracted from release tag (e.g., "testmodule-v1.2.3" -> "testmodule")
-      # Remove the version suffix (everything from -v followed by digits)
       - name: Set Module Directory
         id: module_dir
         run: |
@@ -110,55 +71,67 @@ jobs:
           fi
           echo "resolved_version=$VERSION" >> $GITHUB_OUTPUT
 
-      # Modify module.json with release-specific values
-      - name: Modify Module Manifest With Release-Specific Values
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: "${{ steps.module_dir.outputs.module_dir }}/module.json"
-        env:
-          VERSION: ${{ steps.version.outputs.resolved_version }}
-          URL: ${{ env.project_url }}
-          MANIFEST: ${{ env.latest_manifest_url }}
-          DOWNLOAD: ${{ env.release_module_url }}
+      - name: Update Module Manifest
+        run: |
+          MODULE_DIR="${{ steps.module_dir.outputs.module_dir }}"
+          MODULE_NAME=$(basename "$MODULE_DIR")
+          VERSION="${{ steps.version.outputs.resolved_version }}"
+          
+          # Update module.json with correct URLs
+          jq --arg version "$VERSION" \
+             --arg url "${{ env.project_url }}" \
+             --arg manifest "https://github.com/${{ github.repository }}/releases/download/${MODULE_NAME}-v${VERSION}/module.json" \
+             --arg download "https://github.com/${{ github.repository }}/releases/download/${MODULE_NAME}-v${VERSION}/module.zip" \
+             '.version = $version | .url = $url | .manifest = $manifest | .download = $download' \
+             "$MODULE_DIR/module.json" > "$MODULE_DIR/module.json.tmp" && \
+             mv "$MODULE_DIR/module.json.tmp" "$MODULE_DIR/module.json"
+          
+          echo "Updated $MODULE_DIR/module.json:"
+          cat "$MODULE_DIR/module.json"
 
-      # Create a module archive for the specific module
-      # Build the zip file with a module-specific name and verify zip was created
       - name: Create Module Archive
         run: |
           MODULE_DIR="${{ steps.module_dir.outputs.module_dir }}"
-          MODULE_NAME="${{ github.event.inputs.module_name }}"
+          MODULE_NAME=$(basename "$MODULE_DIR")
           
           cd "$MODULE_DIR"
-          zip                                    \
-            --recurse-paths                      \
-            ../module.zip                        \
-            module.json                          \
-            README.md                            \
-            LICENSE                              \
-            templates/                           \
-            assets/                              \
-            scripts/                             \
-            styles/                              \
-            packs/                               \
-            language/                            \
+          zip -r ../module.zip \
+            module.json \
+            README.md \
+            LICENSE \
+            templates/ \
+            assets/ \
+            scripts/ \
+            styles/ \
+            packs/ \
+            language/ \
             lang/ 2>/dev/null || true
           
           if [ ! -f "../module.zip" ]; then
             echo "Error: Failed to create module archive"
             exit 1
           fi
+          
+          echo "Created archive: ../module.zip"
+          ls -lh ../module.zip
 
-      # Upload artifacts for workflow_dispatch runs
+      - name: Copy Files to Root
+        run: |
+          MODULE_DIR="${{ steps.module_dir.outputs.module_dir }}"
+          cp "$MODULE_DIR/module.json" ./module.json
+          cp ./module.zip ./module.zip
+          echo "Files ready for release"
+          ls -lh ./module.json ./module.zip
+
       - name: Upload Artifacts
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: module-${{ github.event.inputs.module_name }}
           path: |
-            module-${{ github.event.inputs.module_name }}.zip
-            ${{ steps.module_dir.outputs.module_dir }}/module.json
+            ./module.zip
+            ./module.json
 
-      # Update GitHub release with files for release events
       - name: Update Release With Files
         if: github.event_name == 'release'
         uses: ncipollo/release-action@v1
@@ -168,6 +141,6 @@ jobs:
           draft: ${{ github.event.release.unpublished }}
           prerelease: ${{ github.event.release.prerelease }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./module.json, ./module.zip"
+          artifacts: "./module.json,./module.zip"
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
