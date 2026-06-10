@@ -38,13 +38,14 @@ jobs:
 
       # Determine module directory based on input or release tag
       # Module name extracted from release tag (e.g., "testmodule-v1.2.3" -> "testmodule")
+      # Remove the version suffix (everything from -v followed by digits)
       - name: Set Module Directory
         id: module_dir
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             MODULE_DIR="${{ github.event.inputs.module_name }}"
           else
-            MODULE_DIR=$(echo "${{ github.event.release.tag_name }}" | cut -d'v' -f1)
+            MODULE_DIR=$(echo "${{ github.event.release.tag_name }}" | sed 's/-v[0-9].*//')
           fi
           echo "module_dir=$MODULE_DIR" >> $GITHUB_OUTPUT
           echo "Building module from: $MODULE_DIR"
