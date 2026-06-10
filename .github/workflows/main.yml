@@ -119,7 +119,6 @@ jobs:
         run: |
           MODULE_DIR="${{ steps.module_dir.outputs.module_dir }}"
           cp "$MODULE_DIR/module.json" ./module.json
-          cp ./module.zip ./module.zip
           echo "Files ready for release"
           ls -lh ./module.json ./module.zip
 
