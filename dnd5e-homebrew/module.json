@@ -1,6 +1,6 @@
 {
-  "id": "shared-homebrew",
-  "title": "Shared Homebrew",
+  "id": "dnd5e-homebrew",
+  "title": "Parker's DND5E Homebrew Module",
   "version": "1.18.0",
   "compatibility": {
     "minimum": "14",
